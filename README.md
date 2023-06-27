@@ -1,2 +1,2 @@
 # GraphQL
-This Repo contains sample code of GraphQL for learning purpose.
+This repo contains a sample code of GraphQL for learning purposes.
