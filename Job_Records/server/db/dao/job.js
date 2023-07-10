@@ -28,7 +28,7 @@ export const getJobByCompanyId = async (companyId) => {
   }
 };
 
-export const createJob = async ({ companyId, title, description }) => {
+export const createJob = async (companyId, title, description) => {
   try {
     const jobModel = new jobSchema();
     jobModel.title = title;
@@ -43,18 +43,18 @@ export const createJob = async ({ companyId, title, description }) => {
 
 export const deleteJob = async (id) => {
   try {
-    return await jobModel.findOneAndDelete(id);
+    return await jobSchema.findOneAndDelete(id);
   } catch (error) {
     return error;
   }
 };
 
-export const updateJob = async ({ id, title, description }) => {
+export const updateJob = async ({id, title, description }) => {
   try {
-    const document = await jobModel.findById(id);
+    const document = await jobSchema.findById(id);
     if (title) document.title = title;
     if (description) document.description = description;
-    return await jobModel.save();
+    return await document.save();
   } catch (error) {
     return error;
   }

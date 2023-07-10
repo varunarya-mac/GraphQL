@@ -1,7 +1,6 @@
 import { Schema, model } from "mongoose";
 
 const jobSchema = new Schema({
-  _id: Schema.Types.ObjectId,
   companyId: String,
   title: {
     type: String,

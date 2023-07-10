@@ -1,22 +1,27 @@
 import { useParams } from "react-router";
-// import { companies } from '../lib/fake-data';
-import { getCompanyDetails } from "../lib/graphQL/query";
-import { useEffect, useState } from "react";
 import JobList from "../components/JobList";
+import {useQuery} from '@apollo/client'
+import {getCompanyDetails} from '../lib/graphQL/query'
+
 function CompanyPage() {
   const { companyId } = useParams();
+  const {data, loading, error} = useQuery(getCompanyDetails, {
+    variables: {companyId}
+  })
 
-  const [company, updateCompanyInfo] = useState();
+  // useEffect(() => {
+  //   const fetchComapnyDetails = async () => {
+  //     const data = await getCompanyDetails(companyId);
+  //     updateCompanyInfo(data);
+  //   };
+  //   fetchComapnyDetails();
+  // }, [companyId]);
 
-  useEffect(() => {
-    const fetchComapnyDetails = async () => {
-      const data = await getCompanyDetails(companyId);
-      updateCompanyInfo(data);
-    };
-    fetchComapnyDetails();
-  }, [companyId]);
-
-  if (!company) return <div>Loading...</div>;
+  
+  if (loading) return <div>Loading...</div>;
+  if (error) return <div>Data unavailable...</div>;
+  const { company } = data;
+  
 
   return (
     <div>

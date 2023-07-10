@@ -6,6 +6,7 @@ import { ApolloServer } from "@apollo/server";
 import { expressMiddleware as apolloMidleware } from "@apollo/server/express4";
 import { resolvers } from "./resolver.js";
 import { readFile } from "node:fs/promises";
+import { getUser } from "./db/dao/users.js";
 
 const PORT = 9000;
 
@@ -16,9 +17,23 @@ app.post("/login", handleLogin);
 
 const typeDefs = await readFile("./schema.graphql", "utf-8");
 
+async function getContext({ req }) {
+  try {
+    if (req.auth) {
+      // console.log('---auth--', req.auth);
+      const user = await getUser(req.auth.sub);
+      return user;
+    } else {
+      return {};
+    }
+  } catch (error) {
+    return {};
+  }
+}
+
 const apolloServer = new ApolloServer({ typeDefs, resolvers });
 await apolloServer.start();
-app.use("/graphql", apolloMidleware(apolloServer));
+app.use("/graphql", apolloMidleware(apolloServer, { context: getContext }));
 
 connectDB();
 

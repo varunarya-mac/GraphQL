@@ -1,25 +1,29 @@
 import { useParams } from "react-router";
 import { Link } from "react-router-dom";
 import { formatDate } from "../lib/formatters";
-// import { jobs } from '../lib/fake-data';
-import { jobById } from "../lib/graphQL/query";
-import { useEffect, useState } from "react";
+import { jobByIdQuery } from "../lib/graphQL/query";
+import { useQuery } from "@apollo/client";
+
 function JobPage() {
   const { jobId } = useParams();
+  const { data, loading, error } = useQuery(jobByIdQuery, {
+    variables: { jobId },
+  });
 
-  const [job, setJobDetails] = useState();
+  // const [job, setJobDetails] = useState();
+  // useEffect(() => {
+  //   const fetchJob = async () => {
+  //     const response = await jobById(jobId);
+  //     setJobDetails(response);
+  //   };
 
-  useEffect(() => {
-    const fetchJob = async () => {
-      const response = await jobById(jobId);
-      setJobDetails(response);
-    };
+  //   fetchJob();
+  // }, [jobId]);
 
-    fetchJob();
-  }, [jobId]);
-
-  if (!job) return <div>Loading...</div>;
-
+  if (loading) return <div>Loading...</div>;
+  if (error) return <div>Data Unavailable</div>;
+  
+  const { job } = data;
   return (
     <div>
       <h1 className="title is-2">{job.title}</h1>
