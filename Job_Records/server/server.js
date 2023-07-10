@@ -20,7 +20,6 @@ const typeDefs = await readFile("./schema.graphql", "utf-8");
 async function getContext({ req }) {
   try {
     if (req.auth) {
-      // console.log('---auth--', req.auth);
       const user = await getUser(req.auth.sub);
       return user;
     } else {
