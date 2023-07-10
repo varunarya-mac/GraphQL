@@ -1,0 +1,9 @@
+{
+  "db": {
+    "url": "mongoDb url link"
+  },
+  "user": {
+    "email": "test@test.com",
+    "password": "test"
+  }
+}
